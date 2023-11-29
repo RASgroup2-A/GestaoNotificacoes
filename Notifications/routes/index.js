@@ -16,13 +16,13 @@ const server = http.createServer(express);
 var socketIO = require('socket.io');
 var io = socketIO(server, {
   cors: {
-    origin: "http://localhost:7777", //assumi que este é o dominio do frontend[alterar]
+    origin: "http://localhost:7777", //[alterar]
     methods: ["GET", "POST"]
   }
 });
 
 // gerir conexoes webSocket para enviar notificacoes
-// eg.: http://localhost:7777?numero=pg53929
+// query.: numero=pg53929 (definido no frontend)
 io.on('connection', (socket) => {
   console.log('New webSocket client connected:' + socket["handshake"]["query"]["numero"]);
   connections[socket["handshake"]["query"]["numero"]] = socket;

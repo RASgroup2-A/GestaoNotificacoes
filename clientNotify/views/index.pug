@@ -4,10 +4,7 @@ block content
     h1 Cliente #{numero}
     #notificationcard
     script.
-      // Connect to the WebSocket server
       const socket = io('http://localhost:8877?numero=#{numero}');
-      // Listen for the 'notification' event from the server
       socket.on('notification', (message) => {
-      // Update the notification div with the received message
       document.getElementById('notificationcard').innerText = message;
       });
