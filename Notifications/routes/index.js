@@ -1,5 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var http = require('http');
+var connections = {}
+
 const {MessageNotificationsComposer} = require('../notificationsService/messagenotifications_composer')
 
 const {NotificationInfo} = require('../notificationsInfo/notifications_info');
@@ -8,33 +11,106 @@ const {NotificationsService} = require('../notificationsService/notifications_se
 const notificationsinfo = new NotificationInfo();
 const notificationsservice = new NotificationsService(notificationsinfo)
 
-/*Rota para guardar notificação de adicao de um novo docente a registar*/
+
+const server = http.createServer(express);
+var socketIO = require('socket.io');
+var io = socketIO(server, {
+  cors: {
+    origin: "http://localhost:7777", //assumi que este é o dominio do frontend[alterar]
+    methods: ["GET", "POST"]
+  }
+});
+
+// gerir conexoes webSocket para enviar notificacoes
+// eg.: http://localhost:7777?numero=pg53929
+io.on('connection', (socket) => {
+  console.log('New webSocket client connected:' + socket["handshake"]["query"]["numero"]);
+  connections[socket["handshake"]["query"]["numero"]] = socket;
+});
+
+// servidor http para escutar por clientes
+server.listen(8877, () => {
+  console.log('Listening on port 8877 for client connections');
+});
+
+function sendNotification(obj){
+  if(Array.isArray(obj)){
+    for(let i=0;i<obj.length;i++){
+      if(Object.keys(connections).some(key => key === obj[i]["numero"])){
+        const msg = MessageNotificationsComposer.composeMessage(obj[i]);
+        let s = connections[obj[i]["numero"]];
+        s.emit('notification', msg["mensagem"]);   
+      } 
+    }
+  }
+}
+
+/*Rota para guardar notificação do registo de um novo docente(s)*/
 router.post('/notifications/docente', function(req, res, next) {
 
-  nome = req.body["nome"]
-  n_mecanografico = req.body["n_mecanografico"]
-  email = req.body["email"]
-  notificationsservice.notifyNewDocenteAccount(nome,n_mecanografico,email).then(notificacao=>{
-    res.jsonp({msg:"notificacao guardada.","notificacao":notificacao});
-  }).catch(error=>{
-    console.log(error);
-    res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
-  })
+  if(req.body["docentes"]){
+    docentes = req.body["docentes"]
+    notificationsservice.notifyNewDocenteAccounts(docentes).then(notificacoes=>{
+      res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
+    }).catch(error=>{
+      console.log(error);
+      res.status(500).jsonp({ erro: "Não foi possível guardar as notificações do registo dos docentes.", msg:error});
+    })
+  }else{
+    nome = req.body["nome"]
+    n_mecanografico = req.body["n_mecanografico"]
+    email = req.body["email"]
+    notificationsservice.notifyNewDocenteAccount(nome,n_mecanografico,email).then(notificacoes=>{
+      res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
+    }).catch(error=>{
+      console.log(error);
+      res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
+    })
+  }
 })
 
+/*Rota para guardar as notificacoes do registo de um novo aluno(s).*/
+router.post('/notifications/aluno',function(req,res,next){
 
-/*Rota para guardar notificações correspondentes a uma lista de docentes que vao ser registados*/
-router.post('/notifications/docente', function(req, res, next) {
-  
-  docentes = req.body["docentes"]
-  notificationsservice.notifyNewDocenteAccounts(docentes).then(notificacoes=>{
-    res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
-  }).catch(error=>{
-    console.log(error);
-    res.status(500).jsonp({ erro: "Não foi possível guardar as notificações do registo dos docentes.", msg:error});
-  })
+  if(req.body["alunos"]){
+    alunos = req.body["alunos"]
+    notificationsservice.notifyNewAlunoAccounts(alunos).then(notificacoes=>{
+      res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
+    }).catch(error=>{
+      console.log(error);
+      res.status(500).jsonp({ erro: "Não foi possível guardar as notificações do registo dos docentes.", msg:error});
+    })
+  }else{
+    nome = req.body["nome"]
+    n_mecanografico = req.body["n_mecanografico"]
+    email = req.body["email"]
+    notificationsservice.notifyNewAlunoAccount(nome,n_mecanografico,email).then(notificacoes=>{
+      res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
+    }).catch(error=>{
+      console.log(error);
+      res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
+    })
+  }
 })
 
+/*Rota para guardar as notificacoes do registo de um novo aluno(s).*/
+router.post('/notifications/inscricao',function(req,res,next){
+
+    prova = req.body["prova"]
+    salas = req.body["salas"]
+    notificationsservice.criaProvaNotification(prova,salas).then(notificacoes=>{
+      
+      //notificacoes guardadas com exito
+      res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
+
+      //enviar as notificacoes
+      sendNotification(notificacoes)
+
+    }).catch(error=>{
+      console.log(error);
+      res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
+    })
+})
 
 /*Rota para obter notificacoes nao lidas de um user*/
 router.get('/notifications/unread/:id',function(req,res,next){
@@ -63,7 +139,7 @@ router.get('/notifications/:id',function(req,res,next){
 
 
 /*Rota para guardar as notificacoes dos lançamentos de notas.*/
-router.get('/notifications/grades',function(req,res,next){
+router.post('/notifications/grades',function(req,res,next){
   provaInfo = req.body["provaInfo"]
   studentsIds = req.body["studentsIds"]
   notificationsservice.notifyStudentsGradesPublished(provaInfo,studentsIds).then(notificacoes=>{

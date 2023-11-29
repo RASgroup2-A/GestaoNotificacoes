@@ -21,6 +21,27 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+/*
+var socketIO = require('socket.io');
+var io = socketIO(server, {
+  cors: {
+    origin: "http://localhost:7777", //assumindo que este é o dominio do frontend
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Send a notification to the client on connection
+  socket.emit('notification', 'Welcome to the server!');
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
+*/
 /**
  * Listen on provided port, on all network interfaces.
  */

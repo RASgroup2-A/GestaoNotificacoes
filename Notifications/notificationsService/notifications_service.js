@@ -15,8 +15,24 @@ class NotificationsService{
 
     /*Guardar notificações da adições de novos docentes*/
     async notifyNewDocenteAccounts(docentes){
+        notificacoes = []
         for (let i = 0; i < docentes.length; i++) {
-            this.notifyNewDocenteAccount(docentes[i].nome,docentes[i].n_mecanografico,docentes[i].email);    
+            notificacoes.push(this.notifyNewDocenteAccount(docentes[i].nome,docentes[i].n_mecanografico,docentes[i].email));    
+        }          
+        return notificacoes
+    }
+
+    /*Guardar notificação da adicao de um novo aluno*/
+    async notifyNewAlunoAccount(nome,n_mecanografico,email){
+        const aluno = {"_id":mongoose.Types.ObjectId(),"notificacao":"registo aluno","numero":n_mecanografico,
+        "email":email,"nome":nome,"lida":false};
+        return this.notificationsDB.saveAlunoNotification(aluno);
+    }
+
+    /*Guardar notificações da adições de novos alunos*/
+    async notifyNewAlunoAccounts(alunos){
+        for (let i = 0; i < alunos.length; i++) {
+            this.notifyNewAlunoAccount(alunos[i].nome,alunos[i].n_mecanografico,alunos[i].email);    
         }          
     }
 
@@ -37,6 +53,20 @@ class NotificationsService{
             "email":"","nome":"","lida":false,"prova":provaInfo["prova"]};
             this.notificationsDB.saveGradesNotifications(nota);
         }
+    }
+
+    /*Guardar as notificacoes para os alunos de que foram inscritos para uma prova*/
+    async criaProvaNotification(prova,salas){
+        let notificacoes = []
+        for(let s=0;s<salas.length;s++){
+            for(let a=0;a<salas[s]["alunos"].length;a++){
+                const inscricao = {"_id":mongoose.Types.ObjectId(),"notificacao":"inscricao prova","numero":salas[s]["alunos"][a],
+                "lida":false,"prova":prova,"sala":salas[s]["sala"],"data":salas[s]["data"],"hora":salas[s]["hora"]};
+                let n = await this.notificationsDB.saveInscricao(inscricao); 
+                notificacoes.push(n);    
+            }
+        }
+        return notificacoes
     }
 }
 

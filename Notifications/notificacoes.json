@@ -8,7 +8,7 @@
     },
 
     {
-        "notificacao": "criacao de prova", 
+        "notificacao": "inscricao prova", 
         "numero": "pg54232",
         "email": "pg54232@alunos.uminho.pt",
         "nome": "Sergio Costa",
@@ -20,7 +20,7 @@
     },
     
     {
-        "notificacao": "criacao de prova",
+        "notificacao": "inscricao prova",
         "numero": "a81215",
         "email": "a81215@alunos.uminho.pt",
         "nome": "Miguel Passinhas",

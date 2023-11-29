@@ -8,6 +8,13 @@ class NotificationInfo {
             return dados
         })
     }
+    
+    async saveAlunoNotification(aluno){
+        return Notification.create(aluno)
+        .then(dados => {
+            return dados
+        })
+    }
 
     async getallNotifications(numero){
         return Notification.find({"numero":numero})
@@ -37,6 +44,13 @@ class NotificationInfo {
         return Notification.updateMany({"prova":prova,"notificacao":"criacao de prova"},
         { $set: { "sala" : sala,"data":data,"hora":hora }}).then(data=>{
             return data
+        })
+    }
+
+    async saveInscricao(inscricao){
+        return Notification.create(inscricao)
+        .then(dados => {
+            return dados
         })
     }
 }
