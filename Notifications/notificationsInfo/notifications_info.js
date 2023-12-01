@@ -1,4 +1,4 @@
-const Notification = require('../schema/schema')
+const Notification = require('../schema/notification')
 
 class NotificationInfo {
 

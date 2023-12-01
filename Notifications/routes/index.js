@@ -3,10 +3,10 @@ var router = express.Router();
 var http = require('http');
 var connections = {}
 
-const {MessageNotificationsComposer} = require('../notificationsService/messagenotifications_composer')
+const {MessageNotificationsComposer} = require('../composer/messagenotifications_composer')
 
 const {NotificationInfo} = require('../notificationsInfo/notifications_info');
-const {NotificationsService} = require('../notificationsService/notifications_service');
+const {NotificationsService} = require('../controller/service');
 
 const notificationsinfo = new NotificationInfo();
 const notificationsservice = new NotificationsService(notificationsinfo)
