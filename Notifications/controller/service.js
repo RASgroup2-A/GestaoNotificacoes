@@ -56,13 +56,28 @@ class NotificationsService{
     }
 
     /*Guardar as notificacoes para os alunos de que foram inscritos para uma prova*/
-    async criaProvaNotification(prova,salas){
+    async notifyInscricaoProva(prova,alunos){
         let notificacoes = []
-        for(let s=0;s<salas.length;s++){
-            for(let a=0;a<salas[s]["alunos"].length;a++){
-                const inscricao = {"_id":mongoose.Types.ObjectId(),"notificacao":"inscricao prova","numero":salas[s]["alunos"][a],
-                "lida":false,"prova":prova,"sala":salas[s]["sala"],"data":salas[s]["data"],"hora":salas[s]["hora"]};
+        for(let s=0;s<alunos.length;s++){
+            for(let a=0;a<alunos[s]["alunos"].length;a++){
+                const inscricao = {"_id":mongoose.Types.ObjectId(),"notificacao":"inscricao prova","numero":alunos[s]["alunos"][a],
+                "lida":false,"prova":prova,"sala":alunos[s]["sala"],"data":alunos[s]["data"],"hora":alunos[s]["hora"]};
                 let n = await this.notificationsDB.saveInscricao(inscricao); 
+                notificacoes.push(n);    
+            }
+        }
+        return notificacoes
+    }
+
+    async notifyIEditInscricaoProva(prova,alunos){
+        let notificacoes = []
+        for(let s=0;s<alunos.length;s++){
+            for(let a=0;a<alunos[s]["alunos"].length;a++){
+                numero=alunos[s]["alunos"][a];
+                sala=alunos[s]["sala"];
+                data=alunos[s]["data"];
+                hora=alunos[s]["hora"];
+                let n = await this.notificationsDB.editInscricao(prova,data,hora,sala,numero); 
                 notificacoes.push(n);    
             }
         }

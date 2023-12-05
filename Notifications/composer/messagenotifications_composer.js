@@ -4,6 +4,9 @@ class MessageNotificationsComposer {
             if (notificacoes[i]["notificacao"] == "registo docente") {
                 notificacoes[i] = MessageNotificationsComposer.composeRegisterMessage(notificacoes[i]);
             }
+            if (notificacoes[i]["notificacao"] == "registo aluno") {
+                notificacoes[i] = MessageNotificationsComposer.composeRegisterMessage(notificacoes[i]);
+            }
             if (notificacoes[i]["notificacao"] == "inscricao prova") {
                 notificacoes[i] = MessageNotificationsComposer.composeNewExamMessage(notificacoes[i]);
             }
@@ -16,6 +19,9 @@ class MessageNotificationsComposer {
 
     static composeMessage(notificacao) {
         if (notificacao["notificacao"] == "registo docente") {
+            notificacao = MessageNotificationsComposer.composeRegisterMessage(notificacao);
+        }
+        if (notificacao["notificacao"] == "registo aluno") {
             notificacao = MessageNotificationsComposer.composeRegisterMessage(notificacao);
         }
         if (notificacao["notificacao"] == "inscricao prova") {

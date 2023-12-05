@@ -36,13 +36,10 @@ class NotificationInfo {
             return dados
         })
     }
-
-    //atualizar as notificacoes de criacao de prova com as novas informacoes para todos os alunos com essa prova
-    //de forma a manter as informações dos alunos consistentes e não gerar conflitos para a realizacao da prova
     
-    async editExam(prova,data,hora,sala){
+    async editInscricao(prova,data,hora,sala,numero){
         return Notification.updateMany({"prova":prova,"notificacao":"criacao de prova"},
-        { $set: { "sala" : sala,"data":data,"hora":hora }}).then(data=>{
+        { $set: { "sala" : sala,"data":data,"hora":hora,"numero":numero }}).then(data=>{
             return data
         })
     }
