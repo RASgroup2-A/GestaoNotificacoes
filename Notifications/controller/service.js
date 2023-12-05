@@ -69,14 +69,14 @@ class NotificationsService{
         return notificacoes
     }
 
-    async notifyIEditInscricaoProva(prova,alunos){
+    async notifyEditInscricaoProva(prova,alunos){
         let notificacoes = []
         for(let s=0;s<alunos.length;s++){
             for(let a=0;a<alunos[s]["alunos"].length;a++){
-                numero=alunos[s]["alunos"][a];
-                sala=alunos[s]["sala"];
-                data=alunos[s]["data"];
-                hora=alunos[s]["hora"];
+                const numero=alunos[s]["alunos"][a];
+                const sala=alunos[s]["sala"];
+                const data=alunos[s]["data"];
+                const hora=alunos[s]["hora"];
                 let n = await this.notificationsDB.editInscricao(prova,data,hora,sala,numero); 
                 notificacoes.push(n);    
             }
