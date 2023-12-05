@@ -1,6 +1,12 @@
-Tue Dec 05 2023 00:11:07 GMT+0000 (Hora padrão da Europa Ocidental)-notificação da criacao de uma nova prova guardada.;
-Tue Dec 05 2023 00:12:45 GMT+0000 (Hora padrão da Europa Ocidental)-notificação da criacao de uma nova prova guardada.;
-Tue Dec 05 2023 00:35:09 GMT+0000 (Hora padrão da Europa Ocidental)-notificacao de registo de novo docente guardada.;
-Tue Dec 05 2023 00:36:54 GMT+0000 (Hora padrão da Europa Ocidental)-notificação da criacao de uma nova prova guardada.;
-Tue Dec 05 2023 00:37:33 GMT+0000 (Hora padrão da Europa Ocidental)-notificação da criacao de uma nova prova guardada.;
-Tue Dec 05 2023 00:40:32 GMT+0000 (Hora padrão da Europa Ocidental)-notificação da criacao de uma nova prova guardada.;
+Tue Dec 05 2023 16:40:28 GMT+0000 (Hora padrão da Europa Ocidental)***DB (notificação de adição de um novo docente);
+Tue Dec 05 2023 16:41:04 GMT+0000 (Hora padrão da Europa Ocidental)***DB (notificação de adição de um novo docente);
+Tue Dec 05 2023 16:41:17 GMT+0000 (Hora padrão da Europa Ocidental)***DB (notificação de adição de um novo docente);
+Tue Dec 05 2023 16:42:04 GMT+0000 (Hora padrão da Europa Ocidental)***DB (notificação de adição de um novo aluno);
+Tue Dec 05 2023 16:43:57 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de pg54232);
+Tue Dec 05 2023 16:43:57 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de pg54231);
+Tue Dec 05 2023 16:43:57 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a81215);
+Tue Dec 05 2023 16:43:57 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a81216);
+Tue Dec 05 2023 16:44:11 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de pg53929);
+Tue Dec 05 2023 16:44:11 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de pg54231);
+Tue Dec 05 2023 16:44:11 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a81215);
+Tue Dec 05 2023 16:44:11 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a81216);

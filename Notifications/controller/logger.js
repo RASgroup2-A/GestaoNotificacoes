@@ -9,7 +9,7 @@ class Logger {
 
     addLog() {
         try {
-            fs.appendFileSync('log.txt', this.time+"-"+this.log+";\n");
+            fs.appendFileSync('log.txt', this.time+"***"+this.log+";\n");
         }catch(err){
             console.log("couldn't log due to "+err)
         }

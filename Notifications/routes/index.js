@@ -13,7 +13,7 @@ const notificationsservice = new NotificationsService(notificationsinfo)
 
 const server = http.createServer(express);
 var socketIO = require('socket.io');
-const { Logger } = require('../controller/logger');
+
 var io = socketIO(server, {
   cors: {
     origin: "http://localhost:7777", //[alterar]
@@ -51,36 +51,24 @@ router.post('/notifications/docente', function(req, res, next) {
   if(req.body["docentes"]){
     docentes = req.body["docentes"]
     notificationsservice.notifyNewDocenteAccounts(docentes).then(notificacoes=>{
-      mensagem="notificacao de registo de novos docentes guardada."
-      res.jsonp({msg:mensagem,"notificacoes":notificacoes});
-      const logger = new Logger(data,mensagem)
-      logger.addLog()
+      res.jsonp({msg:"notificacao de registo de novos docentes guardada.","notificacoes":notificacoes});
     }).catch(error=>{
       console.log(error);
       mensagem="Não foi possível guardar as notificações do registo dos docentes."
       res.status(500).jsonp({ erro: mensagem, msg:error});
-      const logger = new Logger(data,mensagem)
-      logger.addLog()
     })
   }else{
     nome = req.body["nome"]
     n_mecanografico = req.body["n_mecanografico"]
     email = req.body["email"]
     notificationsservice.notifyNewDocenteAccount(nome,n_mecanografico,email).then(notificacoes=>{
-      mensagem="notificacao de registo de novo docente guardada."
-      res.jsonp({msg:mensagem,"notificacoes":notificacoes});
-      const logger = new Logger(data,mensagem)
-      logger.addLog()
+      res.jsonp({msg:"notificacao de registo de novo docente guardada.","notificacoes":notificacoes});
     }).catch(error=>{
       console.log(error);
-      mensagem= "Não foi possível guardar a notificação do registo do docente."
-      res.status(500).jsonp({ erro:mensagem, msg:error });
-      const logger = new Logger(data,mensagem)
-      logger.addLog()      
+      res.status(500).jsonp({ erro:"Não foi possível guardar a notificação do registo do docente.", msg:error });
     })
   }
 })
-
 
 
 /*Rota para guardar as notificacoes do registo de um novo aluno(s).*/
@@ -108,7 +96,6 @@ router.post('/notifications/aluno',function(req,res,next){
 })
 
 
-
 /*{     "prova": "RAS-2223-1",
         "alunos": [{    //VERSAO 1
                         "sala": "0.08",
@@ -129,20 +116,14 @@ router.post('/notifications/newprova',function(req,res,next){
       alunos = req.body["alunos"]
       data = new Date()
       notificationsservice.notifyInscricaoProva(prova,alunos).then(notificacoes=>{
-      mensagem="notificação da criacao de uma nova prova guardada."
       //notificacoes guardadas com exito
-      res.jsonp({msg:mensagem,"notificacoes":notificacoes});
-      const logger = new Logger(data,mensagem)
-      logger.addLog()
+      res.jsonp({msg:"notificação da criacao de uma nova prova guardada.","notificacoes":notificacoes});
       //enviar as notificacoes
       sendNotification(notificacoes)
 
     }).catch(error=>{
       console.log(error);
-      mensagem="Não foi possível guardar a notificação do registo do docente."
-      const logger = new Logger(data,mensagem)
-      logger.addLog()
-      res.status(500).jsonp({ erro: mensagem, msg:error });
+      res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
     })
 })
 
