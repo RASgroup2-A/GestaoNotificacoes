@@ -50,6 +50,13 @@ class NotificationInfo {
             return dados
         })
     }
+
+    async saveUnavailable(unavailable){
+        return Notification.create(unavailable)
+        .then(dados => {
+            return dados
+        })
+    }
 }
 
 module.exports.NotificationInfo = NotificationInfo;

@@ -57,17 +57,6 @@
         "lida": false
     },
     {
-        "notificacao": "edita-partilha-prova",
-        "numero": "a81215",
-        "email": "a81215@alunos.uminho.pt",
-        "nome": "Miguel Passinhas",
-        "lida": false,
-        "prova":"RAS-2223-2",
-        "sala":"0.14",
-        "data": "22-01-2024",
-        "hora": "18:00"
-    },
-    {
         "notificacao": "nota",
         "numero": "a97223",
         "email": "a97223@alunos.uminho.pt",

@@ -30,6 +30,9 @@ class MessageNotificationsComposer {
         if (notificacao["notificacao"] == "nota") {
             notificacao = MessageNotificationsComposer.composeGradedExamMessage(notificacao);
         }
+        if (notificacao["notificacao"] == "sala indisponivel") {
+            notificacao = MessageNotificationsComposer.composeUnavailableRoomMessage(notificacao);
+        }
         return notificacao;
     }
 
@@ -48,6 +51,13 @@ class MessageNotificationsComposer {
 
     static composeGradedExamMessage(notificacao) {
         const message = "Olá, " + notificacao["numero"] + "! Viemos informar que foram lançadas as suas notas da prova: " + notificacao["prova"]+ ".";
+        const newmessage = { notificacao , "mensagem":message}
+        return newmessage;
+    }
+
+    static composeUnavailableRoomMessage(notificacao){
+        const message = "Olá, " + notificacao["numero"] + "! Viemos informar que a sala " + notificacao["sala"]+ " se encontra indisponível. Assim, a realização do teste "+ notificacao["prova"] +
+        " terá de ser feita noutra sala.";
         const newmessage = { notificacao , "mensagem":message}
         return newmessage;
     }

@@ -22,7 +22,7 @@ var io = socketIO(server, {
 });
 
 // gerir conexoes webSocket para enviar notificacoes
-// query.: numero=pg53929 (definido no frontend)
+// query.: numero=a97223 (definido no frontend) 
 io.on('connection', (socket) => {
   console.log('New webSocket client connected:' + socket["handshake"]["query"]["numero"]);
   connections[socket["handshake"]["query"]["numero"]] = socket;
@@ -109,7 +109,7 @@ router.post('/notifications/aluno',function(req,res,next){
                         "hora": "15:00",
                         "alunos": ["a81215","a81216"]
                      }]      
-}*/ //Rota para guardar as notificacoes da criacao de uma nova prova.
+}*/ //Rota para notificar a criacao de uma nova prova.
 router.post('/notifications/newprova',function(req,res,next){
 
       prova = req.body["prova"]
@@ -123,12 +123,12 @@ router.post('/notifications/newprova',function(req,res,next){
 
     }).catch(error=>{
       console.log(error);
-      res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
+      res.status(500).jsonp({ erro: "Não foi possível notificar a criação de uma nova prova.", msg:error });
     })
 })
 
 
-//Rota para guardar as notificacoes da edicao de uma prova.
+//Rota para notificar a edicao de uma prova.
 router.post('/notifications/editprova',function(req,res,next){
 
     prova = req.body["prova"]
@@ -143,7 +143,7 @@ router.post('/notifications/editprova',function(req,res,next){
 
   }).catch(error=>{
     console.log(error);
-    res.status(500).jsonp({ erro: "Não foi possível guardar a notificação do registo do docente.", msg:error });
+    res.status(500).jsonp({ erro: "Não foi possível notificar a edição de uma nova prova.", msg:error });
   })
 })
 
@@ -172,16 +172,43 @@ router.get('/notifications/:id',function(req,res,next){
   })
 })
 
-
-/*Rota para guardar as notificacoes dos lançamentos de notas.*/
+/*
+{     "provaInfo": "RAS-2223-1",
+      "studentsIds": ["a97223"]
+}
+*/
+/*Rota para notificar os lançamentos de notas.*/
 router.post('/notifications/grades',function(req,res,next){
   provaInfo = req.body["provaInfo"]
   studentsIds = req.body["studentsIds"]
   notificationsservice.notifyStudentsGradesPublished(provaInfo,studentsIds).then(notificacoes=>{
     res.jsonp({msg:"notificacoes dos lançamentos de notas guardadas.","notificacoes":notificacoes});
+
+    sendNotification(notificacoes)
   }).catch(error=>{
     console.log(error);
-    res.status(500).jsonp({ erro: "Não foi possível guardas as notificacoes dos lançamentos de notas.", msg:error});
+    res.status(500).jsonp({ erro: "Não foi notificar o lançamento das notas.", msg:error});
+  })
+})
+
+
+/*Rota para notificar a remoção das salas.
+-> notificar o docente responsavel
+- é da responsabilidade do docente notificar os alunos editando a prova com nova sala(notificacao) -> rota 4
+*/
+router.post('/notifications/unavailableroom',function(req,res,next){
+  provaInfo = req.body["provaInfo"]
+  salaInfo = req.body["salaInfo"]
+  docenteID = req.body["docenteID"]
+
+  notificationsservice.notifyUnavaibleSala(salaInfo,provaInfo,docenteID).then(notificacoes=>{
+
+    res.jsonp({msg:"notificacao de sala indisponivel guardada.","notificacoes":notificacoes});
+    sendNotification(notificacoes)
+
+  }).catch(error=>{
+    console.log(error);
+    res.status(500).jsonp({ erro: "Não foi possível enviar e guardar a notificacao de sala indisponivel.", msg:error});
   })
 })
 
