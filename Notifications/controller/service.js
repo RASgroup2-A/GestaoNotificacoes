@@ -10,12 +10,18 @@ class NotificationsService{
     }
 
     /*Guardar notificação da adicao de um novo docente*/
-    async notifyNewDocenteAccount(nome,n_mecanografico,email){
+    async notifyNewDocenteAccount(nome,n_mecanografico,email,password,platform_password){
         try{
-            const docente = {"_id":mongoose.Types.ObjectId(),"notificacao":"registo docente","numero":n_mecanografico,"email":email,"nome":nome,"lida":false};
-            const v = this.notificationsDB.saveDocenteNotification(docente);
+            const docente = {"_id":mongoose.Types.ObjectId(),"notificacao":"registo docente","numero":n_mecanografico,"platform_password":platform_password,"email":email,"nome":nome,"lida":false};
+            let v = await this.notificationsDB.saveDocenteNotification(docente);
             const logger = new Logger(new Date(),"DB (notificação de adição de um novo docente)")
             logger.addLog()
+            const msg = MessageNotificationsComposer.composeMessage(v);
+            let body = msg["mensagem"]
+            send(email,email,password,'Registo no sistema',body) // send email sender,receiver,password,subject,body
+            const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao do registo de: "+email)
+            logger2.addLog()
+
             return v
         }catch(error){
             const logger = new Logger(new Date(),"error:"+error)
@@ -29,10 +35,18 @@ class NotificationsService{
         try{
             let notificacoes = []
             for (let i = 0; i < docentes.length; i++) {
-                const v = this.notifyNewDocenteAccount(docentes[i].nome,docentes[i].n_mecanografico,docentes[i].email)
+                let v = await this.notifyNewDocenteAccount(docentes[i].nome,docentes[i].n_mecanografico,docentes[i].email,docentes[i].password,docentes[i].platform_password)
                 notificacoes.push(v); 
                 const logger = new Logger(new Date(),"DB (notificação de adição de um novo docente)")
                 logger.addLog()
+
+                const msg = MessageNotificationsComposer.composeMessage(v);
+                let email = docentes[i].n_mecanografico+"@alunos.uminho.pt"
+                let body = msg["mensagem"]
+                send(email,email,docentes[i].password,'Registo no sistema',body) // send email sender,receiver,password,subject,body
+                const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao do registo de: "+email)
+                logger2.addLog()
+    
             }          
             return notificacoes
         }catch(error){
@@ -43,13 +57,20 @@ class NotificationsService{
     }
 
     /*Guardar notificação da adicao de um novo aluno*/
-    async notifyNewAlunoAccount(nome,n_mecanografico,email){
+    async notifyNewAlunoAccount(nome,n_mecanografico,email,password,platform_password){
         try{
             const aluno = {"_id":mongoose.Types.ObjectId(),"notificacao":"registo aluno","numero":n_mecanografico,
-            "email":email,"nome":nome,"lida":false};
-            const v = this.notificationsDB.saveAlunoNotification(aluno);
+            "platform_password":platform_password,"email":email,"nome":nome,"lida":false};
+            let v = await this.notificationsDB.saveAlunoNotification(aluno);
             const logger = new Logger(new Date(),"DB (notificação de adição de um novo aluno)")
             logger.addLog()
+
+            const msg = MessageNotificationsComposer.composeMessage(v);
+            let body = msg["mensagem"]
+            send(email,email,password,'Registo no sistema',body) // send email sender,receiver,password,subject,body
+            const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao do registo de: "+email)
+            logger2.addLog()
+
             return v
         }catch(error){
             const logger = new Logger(new Date(),"error:"+error)
@@ -63,10 +84,16 @@ class NotificationsService{
         try{
             let alunos=[]
             for (let i = 0; i < alunos.length; i++) {
-                v = this.notifyNewAlunoAccount(alunos[i].nome,alunos[i].n_mecanografico,alunos[i].email);
+                let v = await this.notifyNewAlunoAccount(alunos[i].nome,alunos[i].n_mecanografico,alunos[i].email,alunos[i].password,alunos[i].platform_password);
                 alunos.push(v);
                 const logger = new Logger(new Date(),"DB (notificação de adição de um novo aluno)")
                 logger.addLog()
+                const msg = await MessageNotificationsComposer.composeMessage(v);
+                let email = alunos[i].n_mecanografico+"@alunos.uminho.pt"
+                let body = msg["mensagem"]
+                send(email,email,alunos[i].password,'Registo no sistema',body) // send email sender,receiver,password,subject,body
+                const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao do registo de: "+email)
+                logger2.addLog()
             }
             return alunos;   
         }catch(error){
@@ -79,7 +106,7 @@ class NotificationsService{
     /*Filtrar todas as notificações correspondentes a um determinado user.*/
     async getNotifications(idUser){
         try{
-            const v = this.notificationsDB.getallNotifications(idUser)
+            let v = await this.notificationsDB.getallNotifications(idUser)
             const logger = new Logger(new Date(),"DB (filtragem das notificações do aluno "+idUser+")")
             logger.addLog()
             return v
@@ -94,7 +121,7 @@ class NotificationsService{
     /*Filtrar todas as notificações correspondentes a um determinado user que ainda não foram lidas.*/
     async checkNotReadNotifications(idUser){
         try{
-            const v = this.notificationsDB.getallNotReadNotifications(idUser)
+            let v = await this.notificationsDB.getallNotReadNotifications(idUser)
             const logger = new Logger(new Date(),"DB (filtragem das notificações não lidas do aluno "+idUser+")")
             logger.addLog()
             return v
@@ -110,25 +137,18 @@ class NotificationsService{
         try{
             let grades=[]
             for(let i=0;i<studentsIds.length;i++){    
-                const nota = {"_id":mongoose.Types.ObjectId(),"notificacao":"nota","numero":studentsIds[i],"email":"","nome":"","lida":false,"prova":provaInfo};
+                const nota = {"_id":mongoose.Types.ObjectId(),"notificacao":"nota","numero":studentsIds[i].id,"email":"","nome":"","lida":false,"prova":provaInfo};
                 let v = await this.notificationsDB.saveGradesNotifications(nota);
                 const logger = new Logger(new Date(),"DB (guardada a notificação do lançamento das notas de "+studentsIds[i]+")")
                 logger.addLog()
                 grades.push(v)
-                /**
-                 * 
-                 * const msg = await MessageNotificationsComposer.composeMessage(n);
-                    let email = studentsIds[i]+"@alunos.uminho.pt"
-                    let body = msg["mensagem"]
-                    const password ="xxxxxxxxxxx" //a definir
-                    send(email,
-                        email,
-                        password, // a definir
-                        "Notas lançadas - "+provaInfo,
-                        body) // send email sender,receiver,password,subject,body
-                    const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao de lançamento das notas")
-                    logger2.addLog()
-                 */
+
+                const msg = await MessageNotificationsComposer.composeMessage(v);
+                let email = studentsIds[i].id+"@alunos.uminho.pt"
+                let body = msg["mensagem"]
+                send(email,email,studentsIds[i].password,"Notas lançadas - "+provaInfo,body) // send email sender,receiver,password,subject,body
+                const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao de lançamento das notas")
+                logger2.addLog()
                             
             }
             return grades
@@ -145,24 +165,18 @@ class NotificationsService{
             let notificacoes = []
             for(let s=0;s<alunos.length;s++){
                 for(let a=0;a<alunos[s]["alunos"].length;a++){
-                    const inscricao = {"_id":mongoose.Types.ObjectId(),"notificacao":"inscricao prova","numero":alunos[s]["alunos"][a],
+                    const inscricao = {"_id":mongoose.Types.ObjectId(),"notificacao":"inscricao prova","numero":alunos[s]["alunos"][a].id,
                     "lida":false,"prova":prova,"sala":alunos[s]["sala"],"data":alunos[s]["data"],"hora":alunos[s]["hora"]};
                     let n = await this.notificationsDB.saveInscricao(inscricao); 
-                    const logger = new Logger(new Date(),"DB (guardada a notificação da inscrição de "+alunos[s]["alunos"][a]+")")
+                    const logger = new Logger(new Date(),"DB (guardada a notificação da inscrição de "+alunos[s]["alunos"][a].id+")")
                     logger.addLog()    
-                    /*
-                    const msg = await MessageNotificationsComposer.composeMessage(n);
-                    let email = alunos[s]["alunos"][a]+"@alunos.uminho.pt"
+                    
+                    const msg = MessageNotificationsComposer.composeMessage(n);
+                    let email = alunos[s]["alunos"][a].id+"@alunos.uminho.pt"
                     let body = msg["mensagem"]
-                    const password ="xxxxxxxxxxx" //a definir
-                    send(email,
-                        email,
-                        password, // a definir
-                        'Inscrição numa prova',
-                        body) // send email sender,receiver,password,subject,body
+                    send(email,email,alunos[s]["alunos"][a].password,'Inscrição numa prova',body) // send email sender,receiver,password,subject,body
                     const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao da inscricao para "+email)
                     logger2.addLog()    
-                    */
                     
                     notificacoes.push(n);    
                 }
@@ -180,28 +194,21 @@ class NotificationsService{
             let notificacoes = []
             for(let s=0;s<alunos.length;s++){
                 for(let a=0;a<alunos[s]["alunos"].length;a++){
-                    const numero=alunos[s]["alunos"][a];
+                    const numero=alunos[s]["alunos"][a].id;
                     const sala=alunos[s]["sala"];
                     const data=alunos[s]["data"];
                     const hora=alunos[s]["hora"];
                     let n = await this.notificationsDB.editInscricao(prova,data,hora,sala,numero); 
-                    notificacoes.push(n);    
+                    notificacoes.push({"notificacao":"edicao prova","prova":prova,"numero":numero,"sala":sala,"data":data,"hora":hora});    
                     const logger = new Logger(new Date(),"DB (guardada a notificação de edição/inscrição de "+numero+")")
                     logger.addLog()    
-                    /*
-                    const msg = await MessageNotificationsComposer.composeMessage(n);
-                    let email = alunos[s]["alunos"][a]+"@alunos.uminho.pt"
+                    
+                    const msg = MessageNotificationsComposer.composeMessage({"notificacao":"edicao prova","prova":prova,"numero":numero,"sala":sala,"data":data,"hora":hora});
+                    let email = alunos[s]["alunos"][a].id+"@alunos.uminho.pt"
                     let body = msg["mensagem"]
-                    const password ="xxxxxxxxxxx" //a definir
-                    send(email,
-                        email,
-                        password, // a definir
-                        'Alteração da prova',
-                        body) // send email sender,receiver,password,subject,body
+                    send(email,email,alunos[s]["alunos"][a].password,'Alterações na realização da prova',body) // send email sender,receiver,password,subject,body
                     const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao da inscricao para "+email)
-                    logger2.addLog()    
-
-                    */
+                    logger2.addLog()
                 }
             }
             return notificacoes
@@ -212,7 +219,7 @@ class NotificationsService{
         }
     }
 
-    async notifyUnavaibleSala(salaInfo,provaInfo,docenteID){
+    async notifyUnavaibleSala(salaInfo,provaInfo,docenteID,password){
         try{
             let notificacoes = []
             const unavailable = {"_id":mongoose.Types.ObjectId(),"notificacao":"sala indisponivel","numero":docenteID,
@@ -220,19 +227,13 @@ class NotificationsService{
             let n = await this.notificationsDB.saveUnavailable(unavailable); 
             const logger = new Logger(new Date(),"DB (guardada a notificação de sala indisponivel)")
             logger.addLog()    
-            /*
-            const msg = await MessageNotificationsComposer.composeMessage(n);
+            
+            const msg = MessageNotificationsComposer.composeMessage(n);
             let email = docenteID+"@alunos.uminho.pt"
             let body = msg["mensagem"]
-            const password ="xxxxxxxxxxx" //a definir
-            send(email,
-                email,
-                password, // a definir
-                'Sala indisponível',
-                body) // send email sender,receiver,password,subject,body
+            send(email,email,password, 'Sala indisponível',body) // send email sender,receiver,password,subject,body
             const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao da inscricao para "+email)
-            logger2.addLog()    
-            */            
+            logger2.addLog()           
             notificacoes.push(n);    
             return notificacoes
         }catch(err){

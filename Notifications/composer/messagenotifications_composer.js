@@ -27,6 +27,9 @@ class MessageNotificationsComposer {
         if (notificacao["notificacao"] == "inscricao prova") {
             notificacao = MessageNotificationsComposer.composeNewExamMessage(notificacao);
         }
+        if (notificacao["notificacao"] == "edicao prova") {
+            notificacao = MessageNotificationsComposer.composeEditExamMessage(notificacao);
+        }
         if (notificacao["notificacao"] == "nota") {
             notificacao = MessageNotificationsComposer.composeGradedExamMessage(notificacao);
         }
@@ -37,26 +40,33 @@ class MessageNotificationsComposer {
     }
 
     static composeRegisterMessage(notificacao) {
-        const message = "Olá, " + notificacao['nome'] + "! Viemos informar que você foi registado(a) no sistema com o email: " + notificacao['email'];
+        const message = "Olá, " + notificacao['nome'] +"!\r\n" + "Viemos informar que você foi registado(a) no sistema com o email: " + notificacao['email'] +" e password: "+notificacao['platform_password']+".";
         const newmessage = { notificacao , "mensagem":message}
         return newmessage
     }
 
     static composeNewExamMessage(notificacao) {
-        const message = "Olá, " + notificacao["numero"] + "! Viemos informar que foi criada uma nova prova: " + notificacao["prova"] + " para a qual você foi inscrito.\r\n" +
-        "A prova irá se realizar na sala " + notificacao["sala"] + " no dia " + notificacao["data"] + " às " + notificacao["hora"] + ".";
+        const message = "Olá, " + notificacao["numero"] +"!\r\n" +  "Viemos informar que foi inscrito para a prova: " + notificacao["prova"] + ".\r\n" +
+        "A prova realizar-se-á na sala " + notificacao["sala"] + " no dia " + notificacao["data"] + " às " + notificacao["hora"] + "H.";
+        const newmessage = { notificacao , "mensagem":message}
+        return newmessage;
+    }
+
+    static composeEditExamMessage(notificacao) {
+        const message = "Olá, " + notificacao["numero"] +"!\r\n" + " Viemos informar que houve alterações em relação à prova: " + notificacao["prova"] + ".\r\n" +
+        "A prova realizar-se-á na sala " + notificacao["sala"] + " no dia " + notificacao["data"] + " às " + notificacao["hora"] + "H.";
         const newmessage = { notificacao , "mensagem":message}
         return newmessage;
     }
 
     static composeGradedExamMessage(notificacao) {
-        const message = "Olá, " + notificacao["numero"] + "! Viemos informar que foram lançadas as suas notas da prova: " + notificacao["prova"]+ ".";
+        const message = "Olá, " + notificacao["numero"] +"!\r\n" + " Viemos informar que foram lançadas as suas notas da prova: " + notificacao["prova"]+ "H.";
         const newmessage = { notificacao , "mensagem":message}
         return newmessage;
     }
 
     static composeUnavailableRoomMessage(notificacao){
-        const message = "Olá, " + notificacao["numero"] + "! Viemos informar que a sala " + notificacao["sala"]+ " se encontra indisponível. Assim, a realização do teste "+ notificacao["prova"] +
+        const message = "Olá, " + notificacao["numero"] +"!\r\n" + " Viemos informar que a sala " + notificacao["sala"]+ " se encontra indisponível. Assim, a realização do teste "+ notificacao["prova"] +
         " terá de ser feita noutra sala.";
         const newmessage = { notificacao , "mensagem":message}
         return newmessage;

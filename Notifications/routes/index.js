@@ -22,7 +22,7 @@ var io = socketIO(server, {
 });
 
 // gerir conexoes webSocket para enviar notificacoes
-// query.: numero=a97223 (definido no frontend) 
+// query.: numero=a97223 (definido no frontend)
 io.on('connection', (socket) => {
   console.log('New webSocket client connected:' + socket["handshake"]["query"]["numero"]);
   connections[socket["handshake"]["query"]["numero"]] = socket;
@@ -61,7 +61,9 @@ router.post('/notifications/docente', function(req, res, next) {
     nome = req.body["nome"]
     n_mecanografico = req.body["n_mecanografico"]
     email = req.body["email"]
-    notificationsservice.notifyNewDocenteAccount(nome,n_mecanografico,email).then(notificacoes=>{
+    password = req.body["password"]
+    platform_password = req.body["platform_password"]
+    notificationsservice.notifyNewDocenteAccount(nome,n_mecanografico,email,password,platform_password).then(notificacoes=>{
       res.jsonp({msg:"notificacao de registo de novo docente guardada.","notificacoes":notificacoes});
     }).catch(error=>{
       console.log(error);
@@ -86,7 +88,9 @@ router.post('/notifications/aluno',function(req,res,next){
     nome = req.body["nome"]
     n_mecanografico = req.body["n_mecanografico"]
     email = req.body["email"]
-    notificationsservice.notifyNewAlunoAccount(nome,n_mecanografico,email).then(notificacoes=>{
+    password = req.body["password"]
+    platform_password = req.body["platform_password"]
+    notificationsservice.notifyNewAlunoAccount(nome,n_mecanografico,email,password,platform_password).then(notificacoes=>{
       res.jsonp({msg:"notificacao guardada.","notificacoes":notificacoes});
     }).catch(error=>{
       console.log(error);
@@ -101,13 +105,13 @@ router.post('/notifications/aluno',function(req,res,next){
                         "sala": "0.08",
                         "data": "20-01-2024",
                         "hora": "10:00",
-                        "alunos": ["pg54232","pg54231"]
+                        "alunos": [{"id":"pg54232",password:"pass123"},{"id":"pg73463",password:"pass234"}]
                      },
                      {  //VERSAO 2
                         "sala": "0.04",
                         "data": "20-01-2024",
                         "hora": "15:00",
-                        "alunos": ["a81215","a81216"]
+                        "alunos":  [{"id":"a84544",password:"dger"},{"id":"a67544",password:"sadsgg"}]
                      }]      
 }*/ //Rota para notificar a criacao de uma nova prova.
 router.post('/notifications/newprova',function(req,res,next){
@@ -174,7 +178,7 @@ router.get('/notifications/:id',function(req,res,next){
 
 /*
 {     "provaInfo": "RAS-2223-1",
-      "studentsIds": ["a97223"]
+      "studentsIds": [{"id":"a84544",password:"dger"},...]
 }
 */
 /*Rota para notificar os lançamentos de notas.*/
@@ -200,6 +204,7 @@ router.post('/notifications/unavailableroom',function(req,res,next){
   provaInfo = req.body["provaInfo"]
   salaInfo = req.body["salaInfo"]
   docenteID = req.body["docenteID"]
+  password= req.body["password"]
 
   notificationsservice.notifyUnavaibleSala(salaInfo,provaInfo,docenteID).then(notificacoes=>{
 
