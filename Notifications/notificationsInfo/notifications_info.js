@@ -38,8 +38,15 @@ class NotificationInfo {
     }
     
     async editInscricao(prova,data,hora,sala,numero){
-        return Notification.updateMany({"prova":prova,"notificacao":"inscricao prova"},
+        return Notification.updateMany({"prova":prova,"notificacao":"Inscrição Prova"},
         { $set: { "sala" : sala,"data":data,"hora":hora,"numero":numero }}).then(data=>{
+            return data
+        })
+    }
+
+    async addeditInscricao(id,prova,data,hora,sala,numero){
+        return Notification.create({"_id":id,"prova":prova,"notificacao":"Edição Prova",
+         "sala" : sala,"data":data,"hora":hora,"numero":numero }).then(data=>{
             return data
         })
     }

@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://localhost:7777");  //[alterar]
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");  //[alterar]
   res.header("Access-Control-Allow-Methods", "GET, POST");
   next();
 });

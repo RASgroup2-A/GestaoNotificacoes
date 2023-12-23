@@ -1,36 +1,39 @@
 class MessageNotificationsComposer {
     static composeMessages(notificacoes) {
         for (let i = 0; i < notificacoes.length; i++) {
-            if (notificacoes[i]["notificacao"] == "registo docente") {
+            if (notificacoes[i]["notificacao"] == "Registo docente") {
                 notificacoes[i] = MessageNotificationsComposer.composeRegisterMessage(notificacoes[i]);
             }
-            if (notificacoes[i]["notificacao"] == "registo aluno") {
+            if (notificacoes[i]["notificacao"] == "Registo aluno") {
                 notificacoes[i] = MessageNotificationsComposer.composeRegisterMessage(notificacoes[i]);
             }
-            if (notificacoes[i]["notificacao"] == "inscricao prova") {
+            if (notificacoes[i]["notificacao"] == "Inscrição Prova") {
                 notificacoes[i] = MessageNotificationsComposer.composeNewExamMessage(notificacoes[i]);
             }
-            if (notificacoes[i]["notificacao"] == "nota") {
+            if (notificacoes[i]["notificacao"] == "Notas") {
                 notificacoes[i] = MessageNotificationsComposer.composeGradedExamMessage(notificacoes[i]);
+            }
+            if (notificacoes[i]["notificacao"] == "Edição Prova") {
+                notificacoes[i] = MessageNotificationsComposer.composeEditExamMessage(notificacoes[i]);
             }
         }
         return notificacoes;
     }
 
     static composeMessage(notificacao) {
-        if (notificacao["notificacao"] == "registo docente") {
+        if (notificacao["notificacao"] == "Registo docente") {
             notificacao = MessageNotificationsComposer.composeRegisterMessage(notificacao);
         }
-        if (notificacao["notificacao"] == "registo aluno") {
+        if (notificacao["notificacao"] == "Registo aluno") {
             notificacao = MessageNotificationsComposer.composeRegisterMessage(notificacao);
         }
-        if (notificacao["notificacao"] == "inscricao prova") {
+        if (notificacao["notificacao"] == "Inscrição Prova") {
             notificacao = MessageNotificationsComposer.composeNewExamMessage(notificacao);
         }
-        if (notificacao["notificacao"] == "edicao prova") {
+        if (notificacao["notificacao"] == "Edição Prova") {
             notificacao = MessageNotificationsComposer.composeEditExamMessage(notificacao);
         }
-        if (notificacao["notificacao"] == "nota") {
+        if (notificacao["notificacao"] == "Notas") {
             notificacao = MessageNotificationsComposer.composeGradedExamMessage(notificacao);
         }
         if (notificacao["notificacao"] == "sala indisponivel") {
@@ -60,7 +63,7 @@ class MessageNotificationsComposer {
     }
 
     static composeGradedExamMessage(notificacao) {
-        const message = "Olá, " + notificacao["numero"] +"!\r\n" + " Viemos informar que foram lançadas as suas notas da prova: " + notificacao["prova"]+ "H.";
+        const message = "Olá, " + notificacao["numero"] +"!\r\n" + " Viemos informar que foram lançadas as suas notas da prova: " + notificacao["prova"]+ ".";
         const newmessage = { notificacao , "mensagem":message}
         return newmessage;
     }
