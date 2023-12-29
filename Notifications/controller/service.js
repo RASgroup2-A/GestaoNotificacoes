@@ -174,7 +174,7 @@ class NotificationsService{
                     const msg = MessageNotificationsComposer.composeMessage(n);
                     let email = alunos[s]["alunos"][a].id+"@alunos.uminho.pt"
                     let body = msg["mensagem"]
-                    //send(email,email,'Inscrição numa prova',body) // send email sender,receiver,subject,body
+                    send(email,email,'Inscrição numa prova',body) // send email sender,receiver,subject,body
                     const logger2 = new Logger(new Date(),"EMAIL > enviada notificacao da inscricao para "+email)
                     logger2.addLog()    
                     

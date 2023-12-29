@@ -282,3 +282,7 @@ Fri Dec 29 2023 04:21:41 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guard
 Fri Dec 29 2023 04:21:41 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
 Fri Dec 29 2023 04:26:53 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
 Fri Dec 29 2023 04:26:53 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
+Fri Dec 29 2023 12:09:27 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
+Fri Dec 29 2023 12:09:27 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
+Fri Dec 29 2023 12:11:49 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
+Fri Dec 29 2023 12:11:49 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
