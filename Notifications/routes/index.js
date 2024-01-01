@@ -28,6 +28,15 @@ io.on('connection', (socket) => {
   connections[socket["handshake"]["query"]["numero"]] = socket;
 });
 
+//verifica as conexoes que já não estão ativas
+setInterval(() => {
+  Object.keys(connections).forEach(function(key) {
+    if (connections[key].connected!=true) {
+      delete connections[key];
+    }
+  });
+}, 30000);
+
 // servidor http para escutar por clientes
 server.listen(8877, () => {
   console.log('Listening on port 8877 for client connections');
