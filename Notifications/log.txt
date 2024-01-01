@@ -286,3 +286,12 @@ Fri Dec 29 2023 12:09:27 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guard
 Fri Dec 29 2023 12:09:27 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
 Fri Dec 29 2023 12:11:49 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
 Fri Dec 29 2023 12:11:49 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
+Mon Jan 01 2024 03:31:18 GMT+0000 (Hora padrão da Europa Ocidental)***error:TypeError: Class constructor ObjectId cannot be invoked without 'new';
+Mon Jan 01 2024 03:36:23 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
+Mon Jan 01 2024 03:36:23 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
+Mon Jan 01 2024 03:44:07 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
+Mon Jan 01 2024 03:44:07 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
+Mon Jan 01 2024 04:04:50 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
+Mon Jan 01 2024 04:04:50 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;
+Mon Jan 01 2024 04:10:48 GMT+0000 (Hora padrão da Europa Ocidental)***DB (guardada a notificação da inscrição de a97223);
+Mon Jan 01 2024 04:10:48 GMT+0000 (Hora padrão da Europa Ocidental)***EMAIL > enviada notificacao da inscricao para a97223@alunos.uminho.pt;

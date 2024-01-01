@@ -12,7 +12,7 @@ class NotificationsService{
     /*Guardar notificação da adicao de um novo docente*/
     async notifyNewDocenteAccount(nome,n_mecanografico,email,platform_password){
         try{
-            const docente = {"_id":mongoose.Types.ObjectId(),"notificacao":"Registo docente","numero":n_mecanografico,"platform_password":platform_password,"email":email,"nome":nome,"lida":false};
+            const docente = {"_id":new mongoose.Types.ObjectId(),"notificacao":"Registo docente","numero":n_mecanografico,"platform_password":platform_password,"email":email,"nome":nome,"lida":false};
             let v = await this.notificationsDB.saveDocenteNotification(docente);
             const logger = new Logger(new Date(),"DB (notificação de adição de um novo docente)")
             logger.addLog()
@@ -59,7 +59,7 @@ class NotificationsService{
     /*Guardar notificação da adicao de um novo aluno*/
     async notifyNewAlunoAccount(nome,n_mecanografico,email,platform_password){
         try{
-            const aluno = {"_id":mongoose.Types.ObjectId(),"notificacao":"Registo aluno","numero":n_mecanografico,
+            const aluno = {"_id": new mongoose.Types.ObjectId(),"notificacao":"Registo aluno","numero":n_mecanografico,
             "platform_password":platform_password,"email":email,"nome":nome,"lida":false};
             let v = await this.notificationsDB.saveAlunoNotification(aluno);
             const logger = new Logger(new Date(),"DB (notificação de adição de um novo aluno)")
@@ -137,7 +137,7 @@ class NotificationsService{
         try{
             let grades=[]
             for(let i=0;i<studentsIds.length;i++){    
-                const nota = {"_id":mongoose.Types.ObjectId(),"notificacao":"Notas","numero":studentsIds[i].id,"email":"","nome":"","lida":false,"prova":provaInfo};
+                const nota = {"_id": new mongoose.Types.ObjectId(),"notificacao":"Notas","numero":studentsIds[i].id,"email":"","nome":"","lida":false,"prova":provaInfo};
                 let v = await this.notificationsDB.saveGradesNotifications(nota);
                 const logger = new Logger(new Date(),"DB (guardada a notificação do lançamento das notas de "+studentsIds[i]+")")
                 logger.addLog()
@@ -165,7 +165,7 @@ class NotificationsService{
             let notificacoes = []
             for(let s=0;s<alunos.length;s++){
                 for(let a=0;a<alunos[s]["alunos"].length;a++){
-                    const inscricao = {"_id":mongoose.Types.ObjectId(),"notificacao":"Inscrição Prova","numero":alunos[s]["alunos"][a].id,
+                    const inscricao = {"_id": new mongoose.Types.ObjectId(),"notificacao":"Inscrição Prova","numero":alunos[s]["alunos"][a].id,
                     "lida":false,"prova":prova,"sala":alunos[s]["sala"],"data":alunos[s]["data"],"hora":alunos[s]["hora"]};
                     let n = await this.notificationsDB.saveInscricao(inscricao); 
                     const logger = new Logger(new Date(),"DB (guardada a notificação da inscrição de "+alunos[s]["alunos"][a].id+")")
@@ -198,7 +198,7 @@ class NotificationsService{
                     const sala=alunos[s]["sala"];
                     const data=alunos[s]["data"];
                     const hora=alunos[s]["hora"];
-                    let id= mongoose.Types.ObjectId()
+                    let id= new mongoose.Types.ObjectId()
                     let add = await this.notificationsDB.addeditInscricao(id,prova,data,hora,sala,numero); 
                     let n = await this.notificationsDB.editInscricao(prova,data,hora,sala,numero); 
                     notificacoes.push({"notificacao":"Edição Prova","prova":prova,"numero":numero,"sala":sala,"data":data,"hora":hora});    
@@ -224,7 +224,7 @@ class NotificationsService{
     async notifyUnavaibleSala(salaInfo,provaInfo,docenteID){
         try{
             let notificacoes = []
-            const unavailable = {"_id":mongoose.Types.ObjectId(),"notificacao":"sala indisponivel","numero":docenteID,
+            const unavailable = {"_id":new mongoose.Types.ObjectId(),"notificacao":"sala indisponivel","numero":docenteID,
             "lida":false,"prova":provaInfo,"sala":salaInfo};
             let n = await this.notificationsDB.saveUnavailable(unavailable); 
             const logger = new Logger(new Date(),"DB (guardada a notificação de sala indisponivel)")
