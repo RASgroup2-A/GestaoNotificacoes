@@ -18,6 +18,8 @@ module.exports.send = async function (sender,receiver,subject,body) {
       host: 'smtp.office365.com', // server outlook
       port: 587,     // SMTP port
       secure: false, // false for TLS
+      maxConnections: 5, // 5 conexoes
+      pool: true,
       tls: {
         rejectUnauthorized: false
       },
@@ -26,7 +28,8 @@ module.exports.send = async function (sender,receiver,subject,body) {
         pass: password
       }
     });
-    transport.sendMail(mailOptions);
+    let r = await transport.sendMail(mailOptions);
+    return r;
   } catch (error) {
     console.log('Error occurred:', error);
     throw error

@@ -43,6 +43,8 @@ server.listen(8877, () => {
 });
 
 function sendNotification(obj){
+  console.log("here")
+  console.log(obj)
   if(Array.isArray(obj)){
     for(let i=0;i<obj.length;i++){
       if(Object.keys(connections).some(key => key === obj[i]["numero"])){
@@ -127,6 +129,7 @@ router.post('/notifications/newprova',function(req,res,next){
       alunos = req.body["alunos"]
       console.log(prova)
       console.log(alunos)
+      console.log(req.body["alunos"].alunos)
       data = new Date()
       notificationsservice.notifyInscricaoProva(prova,alunos).then(notificacoes=>{
       //notificacoes guardadas com exito
