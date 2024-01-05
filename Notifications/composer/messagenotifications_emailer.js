@@ -15,10 +15,10 @@ module.exports.send = async function (sender,receiver,subject,body) {
 
   try {
     var transport = nodemailer.createTransport({
-      host: 'smtp.office365.com', // server outlook
+      host: 'smtp-mail.outlook.com', // server outlook
       port: 587,     // SMTP port
       secure: false, // false for TLS
-      maxConnections: 5, // 5 conexoes
+      maxConnections: 10, // 10 conexoes
       pool: true,
       tls: {
         rejectUnauthorized: false
